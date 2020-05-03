@@ -13,5 +13,7 @@ namespace Kartenspiel.DataObjects
         {
             return CardSigns + " " + Description;
         }
+
+        public string ImgSrc { get; set; }
     }
 }

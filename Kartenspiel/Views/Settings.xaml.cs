@@ -21,11 +21,9 @@ namespace Kartenspiel.Views
     /// </summary>
     public partial class Settings : UserControl
     {
-        public Settings(List<Setting> settings)
+        public Settings()
         {
             InitializeComponent();
-
-            DataContext = new SettingsViewModel(settings);
         }
     }
 }

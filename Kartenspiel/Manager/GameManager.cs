@@ -23,15 +23,6 @@ namespace Kartenspiel.Manager
             //_playerManager.GenerateAiPlayers(3);
             _playerManager.GenerateHumanPlayer(playerName);
 
-            switch (game)
-            {
-                case Enums.Games.Blackjack:
-                    _currentGame = new Blackjack(_playerManager, _cardManager);
-                    break;
-                default:
-                    _currentGame = new Blackjack(_playerManager, _cardManager);
-                    break;
-            }
         }
     }
 }

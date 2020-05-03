@@ -1,5 +1,6 @@
 ﻿using Kartenspiel.DataObjects;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Kartenspiel.Manager
 {
@@ -38,11 +39,15 @@ namespace Kartenspiel.Manager
 
             for (var i = 0; i < count; i++)
             {
-                Cards.Add(new Card { CardSigns = Enums.CardSigns.Herz, Description = _names[i], Value = i + 2 });
-                Cards.Add(new Card { CardSigns = Enums.CardSigns.Karo, Description = _names[i], Value = i + 2 });
-                Cards.Add(new Card { CardSigns = Enums.CardSigns.Kreuz, Description = _names[i], Value = i + 2 });
-                Cards.Add(new Card { CardSigns = Enums.CardSigns.Pik, Description = _names[i], Value = i + 2 });
+                Cards.Add(new Card { CardSigns = Enums.CardSigns.Herz, Description = _names[i], Value = i + 2, ImgSrc = "CardImages/" + (int.TryParse(_names[i], out int v) ? v + "H.jpg" : _names[i][0] + "H.jpg")});
+                Cards.Add(new Card { CardSigns = Enums.CardSigns.Karo, Description = _names[i], Value = i + 2, ImgSrc = "CardImages/" + (int.TryParse(_names[i], out int v2) ? v2 + "D.jpg" : _names[i][0] + "D.jpg" )});
+                Cards.Add(new Card { CardSigns = Enums.CardSigns.Kreuz, Description = _names[i], Value = i + 2, ImgSrc = "CardImages/" + (int.TryParse(_names[i], out int v3) ? v3 + "C.jpg" : _names[i][0] + "C.jpg" )});
+                Cards.Add(new Card { CardSigns = Enums.CardSigns.Pik, Description = _names[i], Value = i + 2, ImgSrc = "CardImages/" + (int.TryParse(_names[i], out int v4) ? v4 + "S.jpg" : _names[i][0] + "S.jpg" )});
             }
+
+            Cards.ForEach(p => 
+            p.ImgSrc = Path.GetFullPath(p.ImgSrc)
+            );
 
             Cards.Shuffle();
         }

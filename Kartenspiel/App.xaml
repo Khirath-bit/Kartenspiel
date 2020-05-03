@@ -2,8 +2,27 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Kartenspiel"
+             xmlns:View="clr-namespace:Kartenspiel.Views"
+             xmlns:Games="clr-namespace:Kartenspiel.Games"
              StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <DataTemplate DataType="{x:Type View:MainWindowViewModel}">
+                <View:MainWindow />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type View:SettingsViewModel}">
+                <View:Settings />
+            </DataTemplate>
+
+
+
+
+
+
+            <!--Games-->
+            <DataTemplate DataType="{x:Type Games:BlackJackViewModel}">
+                <Games:BlackJackView />
+            </DataTemplate>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

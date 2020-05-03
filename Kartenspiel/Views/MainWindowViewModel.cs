@@ -7,16 +7,21 @@ namespace Kartenspiel.Views
 {
     public class MainWindowViewModel : ObservableObject
     {
-        private UserControl _control = new Settings(new List<Setting>()
+        private ObservableObject _control = new SettingsViewModel(new List<Setting>()
         {
             new Setting{Key = "Name"},
-            new Setting{Key = "Spieleranzahl"}
+            new Setting{Key = "Cash"}
         });
 
-        public UserControl Control
+        public ObservableObject Control
         {
             get => _control;
             set => SetField(ref _control, value);
+        }
+
+        public MainWindowViewModel()
+        {
+
         }
 
         public void Init()
@@ -26,7 +31,7 @@ namespace Kartenspiel.Views
 
         public void SetControl(object control)
         {
-            if (control is UserControl uc)
+            if (control is ObservableObject uc)
                 Control = uc;
         }
     }
