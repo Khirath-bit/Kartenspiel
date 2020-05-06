@@ -13,6 +13,9 @@
             <DataTemplate DataType="{x:Type View:SettingsViewModel}">
                 <View:Settings />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type View:SettingsObjectViewModel}">
+                <View:SettingObject />
+            </DataTemplate>
 
 
 

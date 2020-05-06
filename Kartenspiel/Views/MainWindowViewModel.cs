@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Windows.Controls;
 using Kartenspiel.DataObjects;
 using Utility.MVVM;
@@ -9,8 +10,8 @@ namespace Kartenspiel.Views
     {
         private ObservableObject _control = new SettingsViewModel(new List<Setting>()
         {
-            new Setting{Key = "Name"},
-            new Setting{Key = "Cash"}
+            new Setting{Key = "Name", Value = "Ole"},
+            new Setting{Key = "Cash", Value = "10000000"}
         });
 
         public ObservableObject Control

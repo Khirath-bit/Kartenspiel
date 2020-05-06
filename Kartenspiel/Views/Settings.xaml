@@ -8,25 +8,17 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="9*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <ListView Width="300" ItemsSource="{Binding Settings}">
-            <ListView.ItemTemplate>
-                <ItemContainerTemplate>
-                    <Grid HorizontalAlignment="Stretch">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="4*"></ColumnDefinition>
-                            <ColumnDefinition Width="6*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <Label HorizontalAlignment="Left" Grid.Column="0" Content="{Binding Key}"></Label>
-                        <TextBox HorizontalAlignment="Right" Width="150" Grid.Column="1" Text="{Binding Value}"></TextBox>
-                    </Grid>
-                </ItemContainerTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
 
-        <Button Grid.Row="1" Content="Starten" Margin="300,5" Command="{Binding StartGame}"/>
+        <Label Content="Settings" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="20" FontWeight="Bold"/>
+        <Separator Grid.Row="1" Grid.ColumnSpan="2" Margin="150,10"/>
+        <ItemsControl Grid.Row="2" Margin="150,0" ItemsSource="{Binding Settings}"/>
+
+        <Button Grid.Row="3" Content="Starten" Margin="200,5" Command="{Binding StartGame}" MaxHeight="50" MaxWidth="200"/>
 
     </Grid>
 </UserControl>

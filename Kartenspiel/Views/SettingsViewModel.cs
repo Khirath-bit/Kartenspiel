@@ -17,12 +17,15 @@ namespace Kartenspiel.Views
     {
         public SettingsViewModel(List<Setting> settings)
         {
-            Settings = new ObservableCollection<Setting>(settings);
+            foreach (var item in settings)
+            {
+                _settings.Add(new SettingsObjectViewModel(item.Key, item.Value));
+            }
         }
 
-        private ObservableCollection<Setting> _settings;
+        private ObservableCollection<SettingsObjectViewModel> _settings = new ObservableCollection<SettingsObjectViewModel>();
 
-        public ObservableCollection<Setting> Settings
+        public ObservableCollection<SettingsObjectViewModel> Settings
         {
             get => _settings;
             set => SetField(ref _settings, value);
@@ -45,7 +48,7 @@ namespace Kartenspiel.Views
 
         private void execStarGame(object param)
         {
-            Mediator.NotifyEnumColleagues(Enums.MediatorEnums.ChangeView, new BlackJackViewModel(new List<Setting>(_settings)));
+            Mediator.NotifyEnumColleagues(Enums.MediatorEnums.ChangeView, new BlackJackViewModel(new List<SettingsObjectViewModel>(_settings)));
         }
     }
 }

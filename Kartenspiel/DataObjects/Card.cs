@@ -1,4 +1,6 @@
 ﻿
+using System.IO;
+
 namespace Kartenspiel.DataObjects
 {
     public class Card
@@ -14,6 +16,23 @@ namespace Kartenspiel.DataObjects
             return CardSigns + " " + Description;
         }
 
-        public string ImgSrc { get; set; }
+        public string Img { get; set; }
+
+        public string ImgSrc 
+        { 
+            get
+            {
+                if (Show)
+                    return Img;
+                else
+                    return Back;
+            } 
+        }
+
+        public string Back { get; set; } = Path.GetFullPath("CardImages/Back.jpg");
+
+        public bool Show { get; set; } = false;
+
+
     }
 }

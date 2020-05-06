@@ -64,9 +64,13 @@
     </Compile>
     <Compile Include="Games\BlackJackViewModel.cs" />
     <Compile Include="Views\MainWindowViewModel.cs" />
+    <Compile Include="Views\SettingObject.xaml.cs">
+      <DependentUpon>SettingObject.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SettingsObjectViewModel.cs" />
     <Compile Include="Views\SettingsViewModel.cs" />
     <Page Include="Games\BlackJackView.xaml">
       <SubType>Designer</SubType>
@@ -89,6 +93,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\SettingObject.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -286,6 +294,12 @@
     <Resource Include="CardImages\DS.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="CardImages\Back.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="CardImages\BG.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
