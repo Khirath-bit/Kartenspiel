@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kartenspiel.DataObjects;
+using Kartenspiel.Views;
 
 namespace Kartenspiel.Manager
 {

@@ -1,5 +1,6 @@
 ﻿using Kartenspiel.Manager;
 using System.Collections.Generic;
+using Kartenspiel.Views;
 
 namespace Kartenspiel.DataObjects
 {
@@ -9,6 +10,6 @@ namespace Kartenspiel.DataObjects
 
         CardManager CardManager { get; set; }
 
-        void PlayGame();
+        void PlayGame(List<SettingsObjectViewModel> settings = default);
     }
 }

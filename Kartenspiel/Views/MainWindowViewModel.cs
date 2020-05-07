@@ -11,7 +11,8 @@ namespace Kartenspiel.Views
         private ObservableObject _control = new SettingsViewModel(new List<Setting>()
         {
             new Setting{Key = "Name", Value = "T"},
-            new Setting{Key = "Cash", Value = "10000000"}
+            new Setting{Key = "Cash", Value = "10000000"},
+            new Setting{Key = "FirstBet", Value = "100"}
         });
 
         public ObservableObject Control

@@ -7,8 +7,11 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.ExceptionServices;
+using System.Security.RightsManagement;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Utility.MVVM;
 
@@ -16,38 +19,24 @@ namespace Kartenspiel.Games
 {
     public class BlackJackViewModel : ObservableObject, IGame
     {
-        private List<SettingsObjectViewModel> _settings;
-        public string PlayerCash{ get => "Guthaben: " + _settings.First(p => p.Key == "Cash").Value + ",00 €"; }
-        public string PlayerName { get => "User: " + _settings.First(p => p.Key == "Name").Value; }     
-        public string AugenZahl { get => "Augenzahl: " + PlayerManager.Player.Augenzahl; }
-
-        public PlayerManager PlayerManager { get; set; }
-        public CardManager CardManager { get; set; }
-
-        private bool _modalAc;
-        public bool ModalActivated
-        {
-            get => _modalAc;
-            set
-            {
-                SetField(ref _modalAc, value);
-            }
-        }
-
-        public string BgImage { get => Path.GetFullPath("CardImages/BG.jpg"); }
-        public ObservableCollection<Card> PlayerCards
-        {
-            get => new ObservableCollection<Card>(PlayerManager.Player.Cards);
-        }
+        #region BackingFields
         private ObservableCollection<Card> _dealerCards;
-        public ObservableCollection<Card> DealerCards
-        {
-            get => _dealerCards;
-            set => SetField(ref _dealerCards, value);
-        }
-
+        private object _finScreen;
         private string _bet;
+        #endregion
 
+        #region ViewProperties
+        public string PlayerCash => "Guthaben: " + _settings.First(p => p.Key == "Cash").Value + ",00 €";
+        public string PlayerName => "User: " + _settings.First(p => p.Key == "Name").Value;
+        public string AugenZahl => "Augenzahl: " + PlayerManager.Player.Augenzahl;
+        public string BgImage => Path.GetFullPath("CardImages/BG.jpg");
+        public string DealerAugenzahl => "Dealer Augenzahl: " + new ObservableCollection<Card>(DealerCards.Where(w => w.Show)).CountValues();
+        public ObservableCollection<Card> PlayerCards => new ObservableCollection<Card>(PlayerManager.Player.Cards);
+        public object FinScreen
+        {
+            get => _finScreen;
+            set => SetField(ref _finScreen, value);
+        }
         public string Bet
         {
             get => _bet;
@@ -56,83 +45,184 @@ namespace Kartenspiel.Games
                 var val = value;
                 if (!int.TryParse(value, out var asd))
                     val = _bet;
-                
+
+                _settings["FirstBet"] = val;
+
                 SetField(ref _bet, val);
             }
         }
-
-        public BlackJackViewModel(List<SettingsObjectViewModel> settings)
+        public ObservableCollection<Card> DealerCards
         {
-            _settings = settings;
-            PlayerManager = new PlayerManager();
-            CardManager = new CardManager(Enums.Games.Blackjack);
-            PlayerManager.GenerateHumanPlayer(PlayerName);
-
-            DealerCards = new ObservableCollection<Card>(CardManager.GetCards(2));
-            DealerCards[0].Show = true;
-
-            PlayerManager.Player.Cards = CardManager.GetCards(2, true);
-
-            Bet = "50";
-
-            ModalActivated = false;
-
-            if (DealerCards[0].Value + DealerCards[1].Value == 21)
-            {
-                ModalActivated = true;
-                DealerCards[1].Show = true;
-            }
+            get => _dealerCards;
+            set => SetField(ref _dealerCards, value);
         }
+        #endregion
 
-        public void PlayGame()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool HasWon()
-        {
-            return PlayerManager.Player.Augenzahl < 22;
-        }
-
+        #region Commands
+        public ICommand GetCardCmd => new RelayCommand(ExecGetCard);
         public ICommand StandCommand => new RelayCommand(ExecStand);
+        #endregion
 
-        private void ExecStand(object param)
+        #region CommandMethods
+        /// <summary>
+        /// Executes the stand 
+        /// </summary>
+        private async void ExecStand(object param)
         {
-            DealerCards[1].Show = true; //TODO: Wieso wird das hier nicht gezupdated???
+            var currCard = DealerCards[1];
+            DealerCards[1] = new Card
+            {
+                Back = currCard.Back,
+                CardSigns = currCard.CardSigns,
+                Description = currCard.Description,
+                Img = currCard.Img,
+                Show = true,
+                Value = currCard.Value
+            };
 
             UpdateView();
-
-            while (!HasDealerFinished())
+            await Task.Run(async () =>
             {
-                DealerCards.Add(CardManager.GetCards(1, true)[0]);
-            }
+                while (!HasDealerFinished())
+                {
+                    Thread.Sleep(500);
+                    await Application.Current.Dispatcher.InvokeAsync(() =>
+                    {
+                        DealerCards.Add(CardManager.GetCards(1, true)[0]);
+                    });
+
+                    while (DealerCards.ToList().Exists(e => e.Value == 11) && DealerCards.CountValues() > 21)
+                        DealerCards.First(e => e.Value == 11).Value = 1; //Set Ace's to value 1
+
+                    UpdateView();
+                }
+                Thread.Sleep(500);
+
+                Finish();
+            });
         }
 
-        private bool HasDealerFinished()
-        {
-            var fin = false;
-
-            var sum = DealerCards.CountValues();
-
-            return sum >= 17;
-        }
-
-        public ICommand GetCardCmd => new RelayCommand(ExecGetCard);
-
+        /// <summary>
+        /// Adds a card to the player
+        /// </summary>
+        /// <param name="param"></param>
         private void ExecGetCard(object param)
         {
             PlayerManager.Player.Cards.AddRange(CardManager.GetCards(1, true));
+
+            while (PlayerManager.Player.Cards.Exists(e => e.Value == 11) && PlayerManager.Player.Augenzahl > 21)
+                PlayerManager.Player.Cards.First(e => e.Value == 11).Value = 1; //Set Ace's to value 1
+
             if (PlayerManager.Player.Augenzahl > 21)
-                ModalActivated = true;
+                Finish();
+
+            if(PlayerManager.Player.Augenzahl == 21)
+                ExecStand(null);
+
             UpdateView();
         }
 
+        /// <summary>
+        /// Finishes game and starts the next round
+        /// </summary>
+        /// <param name="param"></param>
+        private void NextRound(object param)
+        {
+            var won = (bool?)param;
+
+            long.TryParse(_settings["Cash"], out var cash);
+            long.TryParse(Bet, out var bet);
+            if (won.HasValue && won.Value)
+                cash += bet;
+            else if (won.HasValue)
+                cash -= bet;
+
+            _settings["Cash"] = cash.ToString();
+
+            Mediator.NotifyEnumColleagues(Enums.MediatorEnums.ChangeView, new BlackJackViewModel(_settings.Select(s => new SettingsObjectViewModel(s.Key, s.Value)).ToList()));
+        }
+
+        /// <summary>
+        /// Ends the program
+        /// </summary>
+        /// <param name="param"></param>
+        private void EndGame(object param)
+        {
+            Application.Current.Shutdown();
+        }
+        #endregion
+
+        private Dictionary<string, string> _settings;
+        public PlayerManager PlayerManager { get; set; }
+        public CardManager CardManager { get; set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public BlackJackViewModel(List<SettingsObjectViewModel> settings) => PlayGame(settings);
+
+        /// <summary>
+        /// Constructor delegate - Manages the game
+        /// </summary>
+        public void PlayGame(List<SettingsObjectViewModel> settings)
+        {
+            _settings = settings.ToDictionary(s => s.Key, s => s.Value);
+
+            PlayerManager = new PlayerManager();
+            CardManager = new CardManager(Enums.Games.Blackjack);
+
+            DealerCards = new ObservableCollection<Card>(CardManager.GetCards(1, true)); // Show first dealer card
+            DealerCards.Add(CardManager.GetCards(1)[0]); //Hide second
+
+            PlayerManager.GenerateHumanPlayer(_settings["Name"]);
+
+            PlayerManager.Player.Cards = CardManager.GetCards(2, true);
+
+            Bet = _settings["FirstBet"];
+
+            if (DealerCards[0].Value + DealerCards[1].Value != 21 && PlayerManager.Player.Augenzahl != 21) //If the player or the dealer has a blackjack, finish the game
+                return;
+
+            ExecStand(null);
+        }
+
+        /// <summary>
+        /// Calculates end results and opens the end screen
+        /// </summary>
+        private void Finish()
+        {
+            var dealerPoints = DealerCards.CountValues();
+            var playerPoints = PlayerManager.Player.Augenzahl;
+
+            bool? won = (playerPoints > dealerPoints && playerPoints <= 21)
+                || dealerPoints > 21;
+
+            if (dealerPoints == playerPoints)
+                won = null;
+
+            FinScreen = new BlackJackEndScreenViewModel(won, NextRound, EndGame);
+        }
+
+        /// <summary>
+        /// Checks if the dealer has finished
+        /// </summary>
+        private bool HasDealerFinished()
+        {
+            var sum = DealerCards.CountValues();
+
+            return sum >= 17 && sum > Math.Min(PlayerManager.Player.Augenzahl, 20);
+        }
+
+        /// <summary>
+        /// Updates the view properties
+        /// </summary>
         private void UpdateView()
         {
             OnPropertyChanged("PlayerCards");
             OnPropertyChanged("AugenZahl");
             OnPropertyChanged("DealerCards");
             OnPropertyChanged("PlayerCash");
+            OnPropertyChanged("DealerAugenzahl");
         }
     }
 }
