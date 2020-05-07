@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kartenspiel.DataObjects;
 
 namespace Kartenspiel.Manager
 {
@@ -21,6 +23,15 @@ namespace Kartenspiel.Manager
                 list[k] = list[n];
                 list[n] = value;
             }
+        }
+
+        public static int CountValues(this ObservableCollection<Card> cards)
+        {
+            var sum = 0;
+
+            cards.ToList().ForEach(c => sum += c.Value);
+
+            return sum;
         }
     }
 }
