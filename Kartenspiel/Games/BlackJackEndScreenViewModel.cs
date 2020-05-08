@@ -10,12 +10,26 @@ namespace Kartenspiel.Games
 {
     public class BlackJackEndScreenViewModel : ObservableObject
     {
+        private Action<string> _setNewBet;
+
         private string _header;
 
         public string Header
         {
             get => _header;
             set => SetField(ref _header, value);
+        }
+
+        private string _newBet;
+
+        public string NewBet
+        {
+            get => _newBet;
+            set
+            {
+                _setNewBet(value);
+                SetField(ref _newBet, value);
+            }
         }
 
         private Action<object> NextRound;
@@ -30,7 +44,7 @@ namespace Kartenspiel.Games
 
         public bool? Won => _won;
 
-        public BlackJackEndScreenViewModel(bool? won, Action<object> nextRound, Action<object> end)
+        public BlackJackEndScreenViewModel(bool? won, Action<object> nextRound, Action<object> end, Action<string> setNewBet, string currentBet)
         {
             if (!won.HasValue)
                 Header = "Unentschieden";
@@ -40,6 +54,8 @@ namespace Kartenspiel.Games
             NextRound = nextRound;
             End = end;
             _won = won;
+            _setNewBet = setNewBet;
+            NewBet = currentBet;
         }
     }
 }

@@ -23,11 +23,19 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
-            <Label Foreground="White" Content="{Binding Header}" Grid.Column="0" Grid.ColumnSpan="2" Margin="70" VerticalContentAlignment="Center" FontSize="40" HorizontalContentAlignment="Center"></Label>
-           
-            <Button Command="{Binding EndCmd}" Grid.Row="1" Foreground="White" Content="Beenden" Grid.Column="0" Margin="15" Height="40" Width="100">
+            <Label Foreground="White" Content="{Binding Header}" Grid.Column="0" Grid.ColumnSpan="2" Margin="70,30,70,30" VerticalContentAlignment="Center" FontSize="40" HorizontalContentAlignment="Center"></Label>
+            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Label Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Bottom">Neuer Einsatz:</Label>
+                <TextBox Text="{Binding NewBet}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="150"></TextBox>
+            </Grid>
+            <Button Command="{Binding EndCmd}" Grid.Row="2" Foreground="White" Content="Beenden" Grid.Column="0" Margin="15" Height="40" Width="100">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
                         <Setter Property="Background" Value="#3e3e3e"/>
@@ -49,7 +57,7 @@
                 </Button.Style>
             </Button>
 
-            <Button Command="{Binding NextRoundCmd}" CommandParameter="{Binding Won}" Grid.Column="1" Foreground="White" Content="Nächste Runde" Grid.Row="1" Margin="15" Height="40" Width="100">
+            <Button Command="{Binding NextRoundCmd}" CommandParameter="{Binding Won}" Grid.Column="1" Foreground="White" Content="Nächste Runde" Grid.Row="2" Margin="15" Height="40" Width="100">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
                         <Setter Property="Background" Value="#3e3e3e"/>

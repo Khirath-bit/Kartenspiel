@@ -23,10 +23,21 @@ namespace Kartenspiel.Games
         private ObservableCollection<Card> _dealerCards;
         private object _finScreen;
         private string _bet;
+        private bool _hasFinished;
+        private bool _standCommandEnabled;
+        private bool _getCardCommandEnabled;
+        private bool _doubleCommandEnabled;
         #endregion
 
         #region ViewProperties
-        public string PlayerCash => "Guthaben: " + _settings.First(p => p.Key == "Cash").Value + ",00 €";
+        public bool DoubleCommandEnabled
+        {
+            get => _doubleCommandEnabled;
+            set => SetField(ref _doubleCommandEnabled, value);
+        }
+        public bool StandCommandEnabled { get => _standCommandEnabled; set => SetField(ref _standCommandEnabled, value); }
+        public bool GetCardCommandEnabled { get => _getCardCommandEnabled; set => SetField(ref _getCardCommandEnabled, value); }
+        public string PlayerCash => "Guthaben: " + _settings["Cash"] + ",00 €";
         public string PlayerName => "User: " + _settings.First(p => p.Key == "Name").Value;
         public string AugenZahl => "Augenzahl: " + PlayerManager.Player.Augenzahl;
         public string BgImage => Path.GetFullPath("CardImages/BG.jpg");
@@ -61,14 +72,38 @@ namespace Kartenspiel.Games
         #region Commands
         public ICommand GetCardCmd => new RelayCommand(ExecGetCard);
         public ICommand StandCommand => new RelayCommand(ExecStand);
+
+        public ICommand DoubleCommand => new RelayCommand(Double);
         #endregion
 
         #region CommandMethods
+        /// <summary>
+        /// Doubles the bet 
+        /// </summary>
+        private void Double(object param)
+        {
+            StandCommandEnabled = false;
+            GetCardCommandEnabled = false;
+            DoubleCommandEnabled = false;
+
+            if (int.TryParse(Bet, out var bet))
+                Bet = (bet * 2).ToString();
+
+            ExecGetCard(null);
+
+            if(!_hasFinished)
+                ExecStand(null);
+        }
+
         /// <summary>
         /// Executes the stand 
         /// </summary>
         private async void ExecStand(object param)
         {
+            DoubleCommandEnabled = false;
+            GetCardCommandEnabled = false;
+            StandCommandEnabled = false;
+
             var currCard = DealerCards[1];
             DealerCards[1] = new Card
             {
@@ -108,6 +143,8 @@ namespace Kartenspiel.Games
         /// <param name="param"></param>
         private void ExecGetCard(object param)
         {
+            DoubleCommandEnabled = false;
+
             PlayerManager.Player.Cards.AddRange(CardManager.GetCards(1, true));
 
             while (PlayerManager.Player.Cards.Exists(e => e.Value == 11) && PlayerManager.Player.Augenzahl > 21)
@@ -166,6 +203,10 @@ namespace Kartenspiel.Games
         /// </summary>
         public void PlayGame(List<SettingsObjectViewModel> settings)
         {
+            GetCardCommandEnabled = true;
+            DoubleCommandEnabled = true;
+            StandCommandEnabled = true;
+
             _settings = settings.ToDictionary(s => s.Key, s => s.Value);
 
             PlayerManager = new PlayerManager();
@@ -183,7 +224,15 @@ namespace Kartenspiel.Games
             if (DealerCards[0].Value + DealerCards[1].Value != 21 && PlayerManager.Player.Augenzahl != 21) //If the player or the dealer has a blackjack, finish the game
                 return;
 
-            ExecStand(null);
+            Finish();
+        }
+
+        /// <summary>
+        /// Sets the new bet
+        /// </summary>
+        private void SetNewBet(string bet)
+        {
+            _settings["FirstBet"] = bet;
         }
 
         /// <summary>
@@ -191,6 +240,7 @@ namespace Kartenspiel.Games
         /// </summary>
         private void Finish()
         {
+            _hasFinished = true;
             var dealerPoints = DealerCards.CountValues();
             var playerPoints = PlayerManager.Player.Augenzahl;
 
@@ -200,7 +250,7 @@ namespace Kartenspiel.Games
             if (dealerPoints == playerPoints)
                 won = null;
 
-            FinScreen = new BlackJackEndScreenViewModel(won, NextRound, EndGame);
+            FinScreen = new BlackJackEndScreenViewModel(won, NextRound, EndGame, SetNewBet, Bet);
         }
 
         /// <summary>

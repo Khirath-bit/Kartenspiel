@@ -63,7 +63,7 @@
 
                 </Grid.ColumnDefinitions>
 
-                <Button Command="{Binding GetCardCmd}" Grid.Row="1" Foreground="White" Grid.Column="3" Content="Karte ziehen (Hit)" Margin="20" MaxHeight="50" MaxWidth="150">
+                <Button Visibility="{Binding GetCardCommandEnabled, Converter={StaticResource BoolToVis}}" Command="{Binding GetCardCmd}" Grid.Row="1" Foreground="White" Grid.Column="3" Content="Karte ziehen (Hit)" Margin="20" MaxHeight="50" MaxWidth="150">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
                             <Setter Property="Background" Value="#3e3e3e"/>
@@ -84,7 +84,28 @@
                         </Style>
                     </Button.Style>
                 </Button>
-                <Button Command="{Binding StandCommand}" Grid.Row="1" Foreground="White" Grid.Column="4" Content="Runde beenden (Stand)" Margin="20" MaxHeight="50" MaxWidth="150">
+                <Button Visibility="{Binding StandCommandEnabled, Converter={StaticResource BoolToVis}}" Command="{Binding StandCommand}" Grid.Row="1" Foreground="White" Grid.Column="4" Content="Runde beenden (Stand)" Margin="20" MaxHeight="50" MaxWidth="150">
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Background" Value="#3e3e3e"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#FF2B2B2B"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button Visibility="{Binding DoubleCommandEnabled, Converter={StaticResource BoolToVis}}" Command="{Binding DoubleCommand}" Grid.Row="1" Foreground="White" Grid.Column="2" Content="x2 (Double down)" Margin="20" MaxHeight="50" MaxWidth="150">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
                             <Setter Property="Background" Value="#3e3e3e"/>
@@ -148,7 +169,7 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Label Content="Einsatz:" FontWeight="Bold" FontSize="18" Foreground="White" VerticalContentAlignment="Center" Grid.Column="0"></Label>
-                <TextBox PreviewTextInput="UIElement_OnPreviewTextInput" Text="{Binding Bet}" HorizontalAlignment="Left" Grid.Column="1" VerticalContentAlignment="Center" Height="25" Width="100"></TextBox>
+                <TextBox IsReadOnly="True" PreviewTextInput="UIElement_OnPreviewTextInput" Text="{Binding Bet}" HorizontalAlignment="Left" Grid.Column="1" VerticalContentAlignment="Center" Height="25" Width="100"></TextBox>
             </Grid>
             <Label FontWeight="Bold" FontSize="18" Foreground="White" VerticalContentAlignment="Center" Grid.Column="1" Content="{Binding PlayerName}"/>
             <Label FontWeight="Bold" FontSize="18" Foreground="White" VerticalContentAlignment="Center" Grid.Column="2" Content="{Binding PlayerCash}"/>
