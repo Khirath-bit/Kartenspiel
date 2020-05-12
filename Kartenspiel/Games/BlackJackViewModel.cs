@@ -115,7 +115,6 @@ namespace Kartenspiel.Games
                 Value = currCard.Value
             };
 
-            UpdateView();
             await Task.Run(async () =>
             {
                 while (!HasDealerFinished())
@@ -241,6 +240,7 @@ namespace Kartenspiel.Games
         private void Finish()
         {
             _hasFinished = true;
+            DealerCards[1].Show = true;
             var dealerPoints = DealerCards.CountValues();
             var playerPoints = PlayerManager.Player.Augenzahl;
 
@@ -251,6 +251,7 @@ namespace Kartenspiel.Games
                 won = null;
 
             FinScreen = new BlackJackEndScreenViewModel(won, NextRound, EndGame, SetNewBet, Bet);
+            UpdateView();
         }
 
         /// <summary>
@@ -273,6 +274,7 @@ namespace Kartenspiel.Games
             OnPropertyChanged("DealerCards");
             OnPropertyChanged("PlayerCash");
             OnPropertyChanged("DealerAugenzahl");
+            OnPropertyChanged("FinScreen");
         }
     }
 }

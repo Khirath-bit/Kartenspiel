@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Kartenspiel.DataObjects.Card" Collapsed="true">
+    <Position X="0.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAQAAAgAAAEAAAAAAAAAAAGAAAABAAgAAAAAAA=</HashCode>
+      <FileName>DataObjects\Card.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Kartenspiel.DataObjects.Enums">
+    <Position X="11.25" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="Kartenspiel.DataObjects.Enums.CardSigns" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DataObjects\Enums.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Kartenspiel.DataObjects.Enums.MediatorEnums" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DataObjects\Enums.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Kartenspiel.DataObjects.Enums.Games" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DataObjects\Enums.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataObjects\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Kartenspiel.DataObjects.Player" Collapsed="true">
+    <Position X="6.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAAQIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataObjects\Player.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Kartenspiel.Games.BlackJackViewModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="3.75" Y="1.25" Width="1.5" />
+    <Members>
+      <Property Name="AugenZahl" Hidden="true" />
+      <Property Name="BgImage" Hidden="true" />
+      <Property Name="DoubleCommand" Hidden="true" />
+      <Property Name="DoubleCommandEnabled" Hidden="true" />
+      <Property Name="FinScreen" Hidden="true" />
+      <Property Name="GetCardCmd" Hidden="true" />
+      <Property Name="GetCardCommandEnabled" Hidden="true" />
+      <Property Name="PlayerCards" Hidden="true" />
+      <Property Name="PlayerCash" Hidden="true" />
+      <Property Name="PlayerName" Hidden="true" />
+      <Property Name="StandCommand" Hidden="true" />
+      <Property Name="StandCommandEnabled" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>BIFGARCIQCAgAAAHhAkAAIQARBACkAASACACgAAQAAg=</HashCode>
+      <FileName>Games\BlackJackViewModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PlayerManager" />
+      <Property Name="CardManager" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Kartenspiel.Manager.CardManager" Collapsed="true">
+    <Position X="1.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAoAAAAAAAAAAAAAAAAAAIAABAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>Manager\CardManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Cards" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Kartenspiel.Manager.GameManager">
+    <Position X="9.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAABABAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Manager\GameManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_playerManager" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Kartenspiel.Manager.PlayerManager" Collapsed="true">
+    <Position X="6.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAQAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Manager\PlayerManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Player" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Kartenspiel.Views.SettingsObjectViewModel">
+    <Position X="6.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAQAAACAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Views\SettingsObjectViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Kartenspiel.Views.SettingsViewModel">
+    <Position X="3" Y="3" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAACAAAAAAAgAAAAAQgAAAAAQAAgAAAAAAAAAA=</HashCode>
+      <FileName>Views\SettingsViewModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Settings" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Kartenspiel.Views.MainWindowViewModel">
+    <Position X="14.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACEAAAAAAAAAAAAAAAAAAAAAAAABAACAAAAAAA=</HashCode>
+      <FileName>Views\MainWindowViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Kartenspiel.DataObjects.IGame" Collapsed="true">
+    <Position X="3.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAABAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataObjects\IGame.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
