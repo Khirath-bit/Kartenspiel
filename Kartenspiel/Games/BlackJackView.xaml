@@ -49,6 +49,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -63,7 +64,7 @@
 
                 </Grid.ColumnDefinitions>
 
-                <Button Visibility="{Binding GetCardCommandEnabled, Converter={StaticResource BoolToVis}}" Command="{Binding GetCardCmd}" Grid.Row="1" Foreground="White" Grid.Column="3" Content="Karte ziehen (Hit)" Margin="20" MaxHeight="50" MaxWidth="150">
+                <Button Visibility="{Binding GetCardCommandEnabled, Converter={StaticResource BoolToVis}}" Command="{Binding GetCardCmd}" Grid.Row="2" Foreground="White" Grid.Column="3" Content="Karte ziehen (Hit)" Margin="20" MaxHeight="50" MaxWidth="150">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
                             <Setter Property="Background" Value="#3e3e3e"/>
@@ -84,7 +85,7 @@
                         </Style>
                     </Button.Style>
                 </Button>
-                <Button Visibility="{Binding StandCommandEnabled, Converter={StaticResource BoolToVis}}" Command="{Binding StandCommand}" Grid.Row="1" Foreground="White" Grid.Column="4" Content="Runde beenden (Stand)" Margin="20" MaxHeight="50" MaxWidth="150">
+                <Button Visibility="{Binding StandCommandEnabled, Converter={StaticResource BoolToVis}}" Command="{Binding StandCommand}" Grid.Row="2" Foreground="White" Grid.Column="4" Content="Runde beenden (Stand)" Margin="20" MaxHeight="50" MaxWidth="150">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
                             <Setter Property="Background" Value="#3e3e3e"/>
@@ -105,7 +106,7 @@
                         </Style>
                     </Button.Style>
                 </Button>
-                <Button Visibility="{Binding DoubleCommandEnabled, Converter={StaticResource BoolToVis}}" Command="{Binding DoubleCommand}" Grid.Row="1" Foreground="White" Grid.Column="2" Content="x2 (Double down)" Margin="20" MaxHeight="50" MaxWidth="150">
+                <Button Visibility="{Binding DoubleCommandEnabled, Converter={StaticResource BoolToVis}}" Command="{Binding DoubleCommand}" Grid.Row="1" Foreground="White" Grid.Column="3" Grid.ColumnSpan="2" Content="x2 (Double down)" Margin="20,35,20,5" MaxHeight="50" MaxWidth="150">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}">
                             <Setter Property="Background" Value="#3e3e3e"/>
